@@ -1,0 +1,6 @@
+{
+  "name": "ENFapp",
+  "description": "App para técnicos em enfermagem: documentos, assinatura e carimbo, plantões, homecares, relatórios, produtividade (edição de PDF), financeiro e mercado.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

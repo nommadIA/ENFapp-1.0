@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ENFapp — Conectando com Google…</title>
+  <style>
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#090d0a;color:#f1f6ef;text-align:center;padding:24px}
+    .box{max-width:340px;width:100%;padding:26px 22px;border-radius:22px;background:#131b15;border:1px solid rgba(182,255,112,.22);box-shadow:0 20px 50px rgba(0,0,0,.45)}
+    .sp{width:34px;height:34px;border-radius:50%;border:3px solid rgba(182,255,112,.2);border-top-color:#b6ff70;margin:0 auto 14px;animation:s .8s linear infinite}
+    @keyframes s{to{transform:rotate(360deg)}}
+    h2{margin:0 0 8px;font-size:1.08rem;font-weight:700}
+    p{margin:0;color:#9eb09f;font-size:.88rem;line-height:1.45}
+    a{display:inline-block;margin-top:16px;padding:10px 18px;border-radius:12px;background:#b6ff70;color:#0a1209;font-weight:700;text-decoration:none;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="sp" id="sp"></div>
+    <h2 id="st">Conectando sua conta Google…</h2>
+    <p id="sub">Aguarde um instante, esta janela será fechada automaticamente.</p>
+    <div id="act"></div>
+  </div>
+  <script>
+    (function(){
+      var payload = {
+        type: 'ENFAPP_OAUTH',
+        hash: location.hash || '',
+        search: location.search || ''
+      };
+      try {
+        localStorage.setItem('enf_oauth_cb', JSON.stringify({
+          hash: payload.hash,
+          search: payload.search,
+          ts: Date.now()
+        }));
+      } catch(e){}
+      if (window.opener && !window.opener.closed) {
+        try { window.opener.postMessage(payload, '*'); } catch(e){}
+        document.getElementById('sp').style.display = 'none';
+        document.getElementById('st').textContent = 'Conta Google conectada!';
+        document.getElementById('sub').textContent = 'Retornando para o ENFapp…';
+        setTimeout(function(){ window.close(); }, 300);
+        setTimeout(function(){
+          document.getElementById('sub').textContent = 'Você já pode fechar esta janela e voltar ao ENFapp.';
+        }, 1600);
+        return;
+      }
+      if (payload.hash || payload.search) {
+        location.replace('/' + payload.search + payload.hash);
+      } else {
+        location.replace('/');
+      }
+    })();
+  </script>
+</body>
+</html>
